@@ -1,0 +1,1 @@
+quay.io/flyers22/secure-demo-app@sha256:7606f410e99c0dd3fbbc181c4ce21eb9eff1d4b4741e5a7ce4965641680bfdcc

@@ -1,0 +1,30 @@
+Build and Sign Summary
+======================
+Timestamp: Tue Oct 28 14:30:19 EDT 2025
+Image: quay.io/flyers22/secure-demo-app:v1.0.0
+Digest: sha256:7606f410e99c0dd3fbbc181c4ce21eb9eff1d4b4741e5a7ce4965641680bfdcc
+Full Reference: quay.io/flyers22/secure-demo-app@sha256:7606f410e99c0dd3fbbc181c4ce21eb9eff1d4b4741e5a7ce4965641680bfdcc
+
+Security Artifacts:
+- Image Signature: ✅ Signed with Cosign
+- SBOM: ✅ Generated and attached
+- Verification: ✅ Passed
+
+Files Created:
+- sbom.spdx.json
+- sbom.cyclonedx.json  
+- sbom.txt
+- image-digest.txt
+- cosign.key (KEEP SECURE!)
+- cosign.pub
+
+Next Steps:
+1. Store cosign.key securely (vault, sealed secret, etc.)
+2. Share cosign.pub with deployment teams
+3. Configure ACS policies to require signed images
+4. Upload SBOM to TPA for analysis
+5. Deploy using digest reference for immutability
+
+Verification:
+cosign verify --key cosign.pub quay.io/flyers22/secure-demo-app@sha256:7606f410e99c0dd3fbbc181c4ce21eb9eff1d4b4741e5a7ce4965641680bfdcc
+cosign download sbom quay.io/flyers22/secure-demo-app@sha256:7606f410e99c0dd3fbbc181c4ce21eb9eff1d4b4741e5a7ce4965641680bfdcc

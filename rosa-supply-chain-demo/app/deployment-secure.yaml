@@ -1,0 +1,85 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: secure-demo-app
+  namespace: secure-supply-chain
+  annotations:
+    image.policy.openshift.io/verify: "true"
+  labels:
+    app: secure-demo-app
+    version: v1.0.0
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: secure-demo-app
+  template:
+    metadata:
+      labels:
+        app: secure-demo-app
+        version: v1.0.0
+    spec:
+      serviceAccountName: secure-app-sa
+      containers:
+      - name: app
+        # Use digest for immutability - this exact image is signed and verified
+        image: quay.io/flyers22/secure-demo-app@sha256:7606f410e99c0dd3fbbc181c4ce21eb9eff1d4b4741e5a7ce4965641680bfdcc
+        ports:
+        - containerPort: 8080
+          name: http
+        env:
+        - name: APP_VERSION
+          value: "v1.0.0"
+        - name: IMAGE_SIGNED
+          value: "true"
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 8080
+          initialDelaySeconds: 10
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 8080
+          initialDelaySeconds: 5
+          periodSeconds: 5
+        resources:
+          requests:
+            memory: "128Mi"
+            cpu: "100m"
+          limits:
+            memory: "256Mi"
+            cpu: "200m"
+        securityContext:
+          allowPrivilegeEscalation: false
+          runAsNonRoot: true
+          capabilities:
+            drop:
+            - ALL
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: secure-demo-app
+  namespace: secure-supply-chain
+spec:
+  selector:
+    app: secure-demo-app
+  ports:
+  - port: 8080
+    targetPort: 8080
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: secure-demo-app
+  namespace: secure-supply-chain
+spec:
+  to:
+    kind: Service
+    name: secure-demo-app
+  port:
+    targetPort: 8080
+  tls:
+    termination: edge

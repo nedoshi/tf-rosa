@@ -1,0 +1,22 @@
+OpenShift Pipelines (Tekton) Configured: Wed Oct 29 09:41:52 EDT 2025
+=================================================
+Namespace: secure-supply-chain
+
+Installed Components:
+- OpenShift Pipelines Operator
+- Tekton Pipelines
+- Tekton Triggers
+
+Secrets Created:
+- cosign-keys: Cosign signing keys
+- image-signatures: Public key ConfigMap
+
+Next Steps:
+1. Create Quay robot account credentials
+2. Create ACS API token secret
+3. Create pipeline tasks for:
+   - Build and sign images
+   - Generate and attach SBOMs
+   - Scan for vulnerabilities
+   - Check with ACS policies
+   - Upload SBOM to TPA
