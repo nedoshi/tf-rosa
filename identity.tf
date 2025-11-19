@@ -33,10 +33,8 @@ resource "rhcs_identity_provider" "developer" {
   }
 }
 
-resource "rhcs_group_membership" "admin" {
-  count = var.admin_password != null && var.admin_password != "" ? 1 : 0
-
-  user    = rhcs_identity_provider.admin[0].htpasswd.users[0].username
-  group   = local.admin_group
-  cluster = local.cluster_id
-}
+# NOTE: The rhcs_group_membership resource is deprecated.
+# Group membership should be handled through OpenShift RBAC after cluster creation.
+# To add the admin user to the cluster-admins group, run:
+#   oc adm groups add-users cluster-admins admin
+# Or use the OpenShift web console to add the user to the group.
